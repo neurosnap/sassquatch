@@ -2,6 +2,7 @@ package com.nysus.sassquatch;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -24,6 +25,8 @@ public class RecentActivity extends ListActivity {
 	
 	TextView recent_view;
 	ListView list;
+	static BackGroundTask jso;
+	JSONArray jsonArray;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +49,18 @@ public class RecentActivity extends ListActivity {
 		params.add(new BasicNameValuePair("action", "get_recent"));
 		params.add(new BasicNameValuePair("user", user));
 		
-		BackGroundTask jso = new BackGroundTask("http://www.nysus.net/sassquatch/sassy.php", "GET", params);
+		jso = new BackGroundTask("http://www.nysus.net/sassquatch/sassy.php", "GET", params);
 		
-		JSONArray jsonArray = jso.doInBackground();
+		try {
+			jsonArray = RecentActivity.jso.execute().get();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ExecutionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		List<String> row = new ArrayList<String>();
 		
 		for (int i = 0; i < jsonArray.length(); i++) {

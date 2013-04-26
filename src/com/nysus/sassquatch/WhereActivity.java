@@ -1,8 +1,5 @@
 package com.nysus.sassquatch;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +30,8 @@ public class WhereActivity extends Activity implements OnItemSelectedListener {
 	TextView where_date;
 	Button where_go;
 	String customer_value;
+	static BackGroundTask jso;
+	static BackGroundTask jso_submit;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,54 +58,48 @@ public class WhereActivity extends Activity implements OnItemSelectedListener {
                 
             	customer_value = spin.getSelectedItem().toString();
                 
-            	String rr = "http://www.nysus.net/sassquatch/sassy.php";
-            	String queryString = "?action=submit_entry&operator=" + user + "&customer=" + customer_value + "&date=" + date;
+            	//String rr = "http://www.nysus.net/sassquatch/sassy.php";
+            	//String queryString = "?action=submit_entry&operator=" + user + "&customer=" + customer_value + "&date=" + date;
             	
-            	rr = rr + queryString.replaceAll(" ", "%20");
+            	//rr = rr + queryString.replaceAll(" ", "%20");
             	
-            	URL u = null;
-				
-				try {
-					u = new URL(rr);
-				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				try {
-					u.openStream();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} finally {
-					
-					new AlertDialog.Builder(WhereActivity.this)
-				    .setTitle("Success!")
-				    .setMessage("I cannot believe you found the Sassquatch!")
-				    .setPositiveButton("I'm that great", new DialogInterface.OnClickListener() {
-				        public void onClick(DialogInterface dialog, int which) { 
-				        	Intent intent = new Intent(WhereActivity.this, MainActivity.class);
-			         		startActivity(intent);
-				        }
-				     })
-				     .show();
-				}
+            	//URL u = null;
+            	
+            	List<NameValuePair> params = new ArrayList<NameValuePair>();
+        		params.add(new BasicNameValuePair("action", "submit_entry"));
+        		params.add(new BasicNameValuePair("operator", user));
+        		params.add(new BasicNameValuePair("customer", customer_value));
+        		params.add(new BasicNameValuePair("date", date));
+        		
+        		jso_submit = new BackGroundTask("http://www.nysus.net/sassquatch/sassy.php", "GET", params);
+        		WhereActivity.jso_submit.execute();
+        		
+				new AlertDialog.Builder(WhereActivity.this)
+			    .setTitle("Success!")
+			    .setMessage("I cannot believe you found the Sassquatch!")
+			    .setPositiveButton("I'm that great", new DialogInterface.OnClickListener() {
+			        public void onClick(DialogInterface dialog, int which) { 
+			        	Intent intent = new Intent(WhereActivity.this, MainActivity.class);
+		         		startActivity(intent);
+			        }
+			     })
+			     .show();
+
             }
         });
 		
-		//String readFeed = readFeed();
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("action", "get_customers"));
 		
-		BackGroundTask jso = new BackGroundTask("http://www.nysus.net/sassquatch/sassy.php", "GET", params);
+		jso = new BackGroundTask("http://www.nysus.net/sassquatch/sassy.php", "GET", params);
 	    // you can use this array to find the school ID based on name
 	    ArrayList<Customer> customers = new ArrayList<Customer>();
 	    // you can use this array to populate your spinner
 	    ArrayList<String> customer_name = new ArrayList<String>();
 
 	    try {
-	      //JSONArray jsonArray = new JSONArray(readFeed);
-	    	JSONArray jsonArray = jso.doInBackground();
+	    	
+	    	JSONArray jsonArray = WhereActivity.jso.execute().get();
 	      
 	      for (int i = 0; i < jsonArray.length(); i++) {
 	    	  
