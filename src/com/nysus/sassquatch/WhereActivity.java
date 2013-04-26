@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -30,6 +31,8 @@ public class WhereActivity extends Activity implements OnItemSelectedListener {
 	TextView where_date;
 	Button where_go;
 	String customer_value;
+	EditText inp_customer;
+	EditText inp_mileage;
 	static BackGroundTask jso;
 	static BackGroundTask jso_submit;
 	
@@ -46,6 +49,9 @@ public class WhereActivity extends Activity implements OnItemSelectedListener {
 		final String user = intent.getStringExtra(WhenActivity.USERNAME);
 		final String date = intent.getStringExtra(WhenActivity.SELDATE);
 		
+		inp_customer = (EditText) findViewById(R.id.where_edit_customer);
+		inp_mileage = (EditText) findViewById(R.id.where_edit_mileage);
+		
 		where_date = (TextView) findViewById(R.id.where_date);
 		where_date.setText(user + " on " + date);
 		
@@ -57,19 +63,23 @@ public class WhereActivity extends Activity implements OnItemSelectedListener {
             	Spinner spin = (Spinner) findViewById(R.id.customer_spinner);
                 
             	customer_value = spin.getSelectedItem().toString();
-                
-            	//String rr = "http://www.nysus.net/sassquatch/sassy.php";
-            	//String queryString = "?action=submit_entry&operator=" + user + "&customer=" + customer_value + "&date=" + date;
-            	
-            	//rr = rr + queryString.replaceAll(" ", "%20");
-            	
-            	//URL u = null;
             	
             	List<NameValuePair> params = new ArrayList<NameValuePair>();
         		params.add(new BasicNameValuePair("action", "submit_entry"));
         		params.add(new BasicNameValuePair("operator", user));
-        		params.add(new BasicNameValuePair("customer", customer_value));
         		params.add(new BasicNameValuePair("date", date));
+        		
+        		if (inp_mileage.getText().toString().equals("")) {
+        			params.add(new BasicNameValuePair("mileage", "0"));
+        		} else {
+        			params.add(new BasicNameValuePair("mileage", inp_mileage.getText().toString()));
+        		}
+        		
+        		if (inp_customer.getText().toString().equals("")) {
+        			params.add(new BasicNameValuePair("customer", customer_value));
+        		} else {
+        			params.add(new BasicNameValuePair("customer", inp_customer.getText().toString()));
+        		}
         		
         		jso_submit = new BackGroundTask("http://www.nysus.net/sassquatch/sassy.php", "GET", params);
         		WhereActivity.jso_submit.execute();
