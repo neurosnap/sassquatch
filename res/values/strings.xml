@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Sassquatch</string>
+    <string name="action_settings">Settings</string>
+    
+    <string name="hello_world">Have you seen him? Identify yourself!</string>
+    <string name="who_steve">Steve Sass</string>
+    <string name="who_kevin">Kevin Wickenheiser</string>
+    <string name="who_michelle">Michelle Stewart</string>
+    <string name="who_brian">Brian Williamson</string>
+    <string name="who_eric">Eric Bower</string>
+    
+    <string name="title_activity_when">When did you see him?</string>
+    <string name="when_view"></string>
+    <string name="pick_date">Select Date</string>
+    <string name="when_date_picked"></string>
+    <string name="when_go">Next</string>
+    <string name="when_recent">View Recent Entries</string>
+    
+    <string name="title_activity_where">Where did you see him?</string>
+    <string name="where_customer">Select a customer</string>
+    <string name="where_date"></string>
+    <string name="where_go">Save!</string>
+    
+    <string name="title_activity_recent">This is where he was last seen, alive</string>
+    <string name="recent_view"></string>
+    <string-array name="customer_array">
+        <item>None</item>
+        <item>IAC</item>
+        <item>TEAM</item>
+        <item>CCM</item>
+        <item>CSP</item>
+        <item>RRP</item>
+    </string-array>
+
+</resources>

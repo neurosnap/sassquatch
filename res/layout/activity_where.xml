@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".WhereActivity"
+    android:orientation="vertical" 
+    android:gravity="center_horizontal" >
+	
+    <TextView
+        android:id="@+id/where_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/where_date"
+         android:layout_marginBottom="15dp" />
+    
+    <TextView
+        android:id="@+id/where_customer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/where_customer"
+         android:layout_marginBottom="10dp" />
+    
+    <Spinner
+	    android:id="@+id/customer_spinner"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	     android:layout_marginBottom="10dp" />
+    
+    <Button
+       android:id="@+id/where_go"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="@string/where_go"
+       android:layout_marginBottom="10dp" />
+
+</LinearLayout>
