@@ -8,28 +8,28 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.NameValuePair;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.os.AsyncTask;
 import android.util.Log;
  
-public class BackGroundTask extends AsyncTask<String, String, JSONObject> {
+public class BackGroundTask extends AsyncTask<String, String, JSONArray> {
   
  List<NameValuePair> postparams = new ArrayList<NameValuePair>();
  String URL = null;
  String method = null;
  static InputStream is = null;
- static JSONObject jObj = null;
+ static JSONArray jObj = null;
  static String json = "";
  
  public BackGroundTask(String url, String method, List<NameValuePair> params) {
@@ -39,7 +39,7 @@ public class BackGroundTask extends AsyncTask<String, String, JSONObject> {
  }
  
  @Override
- protected JSONObject doInBackground(String... params) {
+ protected JSONArray doInBackground(String... params) {
   // TODO Auto-generated method stub
   // Making HTTP request
   try {
@@ -60,8 +60,7 @@ public class BackGroundTask extends AsyncTask<String, String, JSONObject> {
    } else if (method == "GET") {
     // request method is GET
     DefaultHttpClient httpClient = new DefaultHttpClient();
-    String paramString = URLEncodedUtils
-      .format(postparams, "utf-8");
+    String paramString = URLEncodedUtils.format(postparams, "utf-8");
     URL += "?" + paramString;
     HttpGet httpGet = new HttpGet(URL);
  
@@ -88,6 +87,7 @@ public class BackGroundTask extends AsyncTask<String, String, JSONObject> {
     sb.append(line + "\n");
    }
    is.close();
+   //json = sb.toString();
    json = sb.toString();
   } catch (Exception e) {
    Log.e("Buffer Error", "Error converting result " + e.toString());
@@ -95,7 +95,7 @@ public class BackGroundTask extends AsyncTask<String, String, JSONObject> {
  
   // try parse the string to a JSON object
   try {
-   jObj = new JSONObject(json);
+   jObj = new JSONArray(json);
   } catch (JSONException e) {
    Log.e("JSON Parser", "Error parsing data " + e.toString());
   }

@@ -1,17 +1,29 @@
 package com.nysus.sassquatch;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.TargetApi;
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
-public class RecentActivity extends Activity {
+public class RecentActivity extends ListActivity {
 	
 	TextView recent_view;
+	ListView list;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +39,32 @@ public class RecentActivity extends Activity {
 		
 		recent_view = (TextView) findViewById(R.id.recent_view);
 		recent_view.setText(user);
+		
+		//list = (ListView) findViewById(R.id.list);
+		
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("action", "get_recent"));
+		params.add(new BasicNameValuePair("user", user));
+		
+		BackGroundTask jso = new BackGroundTask("http://www.nysus.net/sassquatch/sassy.php", "GET", params);
+		
+		JSONArray jsonArray = jso.doInBackground();
+		List<String> row = new ArrayList<String>();
+		
+		for (int i = 0; i < jsonArray.length(); i++) {
+			
+			try {
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+				row.add(jsonObject.optString("customer") + " on " + jsonObject.optString("date").substring(0, 10));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.mylistview, row);
+		setListAdapter(adapter);
 		
 	}
 

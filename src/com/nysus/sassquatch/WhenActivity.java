@@ -47,10 +47,18 @@ public class WhenActivity extends FragmentActivity {
 		//get date picked text
 		whenDatePicked = (TextView) findViewById(R.id.when_date_picked);
 		
+		final Calendar c = Calendar.getInstance();
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH);
+		int day = c.get(Calendar.DAY_OF_MONTH);
+		
+		sel_date = (month + 1) + "-" + day + "-" + year;
+		whenDatePicked.setText("Date: " + (month + 1) + "-" + day + "-" + year);
+		
 		//get next button
 		when_next = (Button) findViewById(R.id.when_go);
 		//hide next button until date has been selected
-		when_next.setEnabled(false);
+		//when_next.setEnabled(false);
 		when_next.setOnClickListener(new View.OnClickListener() {
              public void onClick(View v) {
                  // Perform action on click
@@ -118,13 +126,16 @@ public class WhenActivity extends FragmentActivity {
 			int month = c.get(Calendar.MONTH);
 			int day = c.get(Calendar.DAY_OF_MONTH);
 			
+			sel_date = (month + 1) + "-" + day + "-" + year;
+			whenDatePicked.setText("Date: " + (month + 1) + "-" + day + "-" + year);
+			
 			// Create a new instance of DatePickerDialog and return it
 			return new DatePickerDialog(getActivity(), this, year, month, day);
 		}
 		
 		public void onDateSet(DatePicker view, int year, int month, int day) {
 			// Do something with the date chosen by the user
-			when_next.setEnabled(true);
+			//when_next.setEnabled(true);
 			
 			sel_date = (month + 1) + "-" + day + "-" + year;
 			

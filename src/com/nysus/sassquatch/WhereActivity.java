@@ -1,20 +1,13 @@
 package com.nysus.sassquatch;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -26,7 +19,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -68,7 +60,7 @@ public class WhereActivity extends Activity implements OnItemSelectedListener {
             	customer_value = spin.getSelectedItem().toString();
                 
             	String rr = "http://www.nysus.net/sassquatch/sassy.php";
-            	String queryString = "?operator=" + user + "&customer=" + customer_value + "&date=" + date;
+            	String queryString = "?action=submit_entry&operator=" + user + "&customer=" + customer_value + "&date=" + date;
             	
             	rr = rr + queryString.replaceAll(" ", "%20");
             	
@@ -102,15 +94,19 @@ public class WhereActivity extends Activity implements OnItemSelectedListener {
             }
         });
 		
-		String readFeed = readFeed();
-
+		//String readFeed = readFeed();
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("action", "get_customers"));
+		
+		BackGroundTask jso = new BackGroundTask("http://www.nysus.net/sassquatch/sassy.php", "GET", params);
 	    // you can use this array to find the school ID based on name
 	    ArrayList<Customer> customers = new ArrayList<Customer>();
 	    // you can use this array to populate your spinner
 	    ArrayList<String> customer_name = new ArrayList<String>();
 
 	    try {
-	      JSONArray jsonArray = new JSONArray(readFeed);
+	      //JSONArray jsonArray = new JSONArray(readFeed);
+	    	JSONArray jsonArray = jso.doInBackground();
 	      
 	      for (int i = 0; i < jsonArray.length(); i++) {
 	    	  
@@ -173,34 +169,5 @@ public class WhereActivity extends Activity implements OnItemSelectedListener {
 	public void onNothingSelected(AdapterView<?> parent) {
 		// Another interface callback
 	}
-	
-	public String readFeed() {
-	    StringBuilder builder = new StringBuilder();
-	    HttpClient client = new DefaultHttpClient();
-
-	    // domain intentionally obfuscated for security reasons
-	    HttpGet httpGet = new HttpGet("http://www.nysus.net/sassquatch/sassy.php?action=get_customers");
-	    try {
-	      HttpResponse response = client.execute(httpGet);
-	      StatusLine statusLine = response.getStatusLine();
-	      int statusCode = statusLine.getStatusCode();
-	      if (statusCode == 200) {
-	        HttpEntity entity = response.getEntity();
-	        InputStream content = entity.getContent();
-	        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-	        String line;
-	        while ((line = reader.readLine()) != null) {
-	          builder.append(line);
-	        }
-	      } else {
-	        Log.e(MainActivity.class.toString(), "Failed to download file");
-	      }
-	    } catch (ClientProtocolException e) {
-	      e.printStackTrace();
-	    } catch (IOException e) {
-	      e.printStackTrace();
-	    }
-	    return builder.toString();
-	  }
 
 }
