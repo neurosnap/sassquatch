@@ -46,7 +46,8 @@ public class WhereActivity extends Activity implements OnItemSelectedListener {
 		//start intent which runs between activities
 		Intent intent = getIntent();
 		//get data from previous screen
-		final String user = intent.getStringExtra(WhenActivity.USERNAME);
+		//final String user = intent.getStringExtra(WhenActivity.USERNAME);
+		final String user = User.getName();
 		final String date = intent.getStringExtra(WhenActivity.SELDATE);
 		
 		inp_customer = (EditText) findViewById(R.id.where_edit_customer);
@@ -89,7 +90,7 @@ public class WhereActivity extends Activity implements OnItemSelectedListener {
 			    .setMessage("I cannot believe you found the Sassquatch!")
 			    .setPositiveButton("I'm that great", new DialogInterface.OnClickListener() {
 			        public void onClick(DialogInterface dialog, int which) { 
-			        	Intent intent = new Intent(WhereActivity.this, MainActivity.class);
+			        	Intent intent = new Intent(WhereActivity.this, WhenActivity.class);
 		         		startActivity(intent);
 			        }
 			     })

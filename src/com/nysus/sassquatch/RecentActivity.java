@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import android.annotation.TargetApi;
 import android.app.ListActivity;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -36,10 +35,10 @@ public class RecentActivity extends ListActivity {
 		setupActionBar();
 		
 		//start intent which runs between activities
-		Intent intent = getIntent();
+		//Intent intent = getIntent();
 		//get data from previous screen
-		final String user = intent.getStringExtra(WhenActivity.USERNAME);
-		
+		//final String user = intent.getStringExtra(WhenActivity.USERNAME);
+		final String user = User.getName();
 		recent_view = (TextView) findViewById(R.id.recent_view);
 		recent_view.setText(user);
 		

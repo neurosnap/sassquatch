@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import com.nysus.sassquatch.User;
 
 public class MainActivity extends Activity {
 	
@@ -38,30 +39,32 @@ public class MainActivity extends Activity {
 	//go to when page after button has been clicked for user
 	public void gotoWhen(View view) {
 		
-		String user = null;
+		String username = null;
+		//User user = User.getInstance();
 		
 		if (buttSteve.getId() == ((Button) view).getId()) {
-			user = "Steve Sass";
+			username = "Steve Sass";
 		}
 		
 		if (buttKevin.getId() == ((Button) view).getId()) {
-			user = "Kevin Wickenheiser";
+			username = "Kevin Wickenheiser";
 		}
 		
 		if (buttMichelle.getId() == ((Button) view).getId()) {
-			user = "Michelle Stewart";
+			username = "Michelle Stewart";
 		}
 		
 		if (buttBrian.getId() == ((Button) view).getId()) {
-			user = "Brian Williamson";
+			username = "Brian Williamson";
 		}
 		
 		if (buttEric.getId() == ((Button) view).getId()) {
-			user = "Eric Bower";
+			username = "Eric Bower";
 		}
 		
 		Intent intent = new Intent(this, WhenActivity.class);
-		intent.putExtra(USERNAME, user);
+		//intent.putExtra(USERNAME, user);
+		User.setName(username);
 		startActivity(intent);
 		
 	}

@@ -31,15 +31,17 @@ public class WhenActivity extends FragmentActivity {
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_when);
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
 		//start intent which runs between activities
-		Intent intent = getIntent();
+		//Intent intent = getIntent();
 		//get data from previous screen
-		final String user = intent.getStringExtra(MainActivity.USERNAME);
+		//final String user = intent.getStringExtra(MainActivity.USERNAME);
+		final String user = User.getName();
 		//display user name
 		whenName = (TextView) findViewById(R.id.when_view);
 		whenName.setText(user + ", please select a date to continue");
@@ -57,14 +59,12 @@ public class WhenActivity extends FragmentActivity {
 		
 		//get next button
 		when_next = (Button) findViewById(R.id.when_go);
-		//hide next button until date has been selected
-		//when_next.setEnabled(false);
 		when_next.setOnClickListener(new View.OnClickListener() {
              public void onClick(View v) {
                  // Perform action on click
             	Intent where_intent = new Intent(WhenActivity.this, WhereActivity.class);
          		where_intent.putExtra(SELDATE, sel_date);
-         		where_intent.putExtra(USERNAME, user);
+         		//where_intent.putExtra(USERNAME, user);
          		startActivity(where_intent);
              }
          });
@@ -75,7 +75,7 @@ public class WhenActivity extends FragmentActivity {
             public void onClick(View v) {
                 // Perform action on click
             	Intent recent_intent = new Intent(WhenActivity.this, RecentActivity.class);
-         		recent_intent.putExtra(USERNAME, user);
+         		//recent_intent.putExtra(USERNAME, user);
          		startActivity(recent_intent);
             }
         });
@@ -135,8 +135,6 @@ public class WhenActivity extends FragmentActivity {
 		
 		public void onDateSet(DatePicker view, int year, int month, int day) {
 			// Do something with the date chosen by the user
-			//when_next.setEnabled(true);
-			
 			sel_date = (month + 1) + "-" + day + "-" + year;
 			
 			whenDatePicked.setText("Date: " + (month + 1) + "-" + day + "-" + year);
