@@ -14,13 +14,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 
 public class MainActivity extends Activity {
 	
-	Button buttSteve, buttKevin, buttMichelle, buttBrian, buttEric;
-	public final static String USERNAME = "com.nysus.sassquatch.USER";
 	static BackGroundTask jso;
 	ArrayList<Operators> operators;
 	

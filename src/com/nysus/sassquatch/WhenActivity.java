@@ -23,8 +23,7 @@ public class WhenActivity extends FragmentActivity {
 	static TextView whenDatePicked;
 	static Button when_next;
 	Button when_recent;
-	
-	public final static String USERNAME = "com.nysus.sassquatch.USER";
+
 	public final static String SELDATE = "com.nysus.sassquatch.SEL_DATE";
 	public static String sel_date = null;
 	
