@@ -2,7 +2,6 @@ package com.nysus.sassquatch;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -20,7 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class RecentActivity extends ListActivity {
+public class RecentActivity extends ListActivity implements asyncOnComplete<JSONArray> {
 	
 	TextView recent_view;
 	ListView list;
@@ -46,18 +45,17 @@ public class RecentActivity extends ListActivity {
 		params.add(new BasicNameValuePair("action", "get_recent"));
 		params.add(new BasicNameValuePair("user", user));
 		
-		jso = new BackGroundTask("http://www.nysus.net/sassquatch/sassy.php", "GET", params);
+		jso = new BackGroundTask(RecentActivity.this, this, "http://www.nysus.net/sassquatch/sassy.php", "GET", params);
+	
+		//activates doInBackground for BackGroundTask
+		//then after the async task is done, call onComplete()
+		RecentActivity.jso.execute();
 		
-		try {
-			jsonArray = RecentActivity.jso.execute().get();
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ExecutionException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
+	}
+	
+	//callback for BackGroundTask async call
+	public void onComplete(JSONArray jsonArray) {
+	    
 		List<String> row = new ArrayList<String>();
 		
 		for (int i = 0; i < jsonArray.length(); i++) {
@@ -76,7 +74,7 @@ public class RecentActivity extends ListActivity {
 		setListAdapter(adapter);
 		
 	}
-
+	
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
 	 */

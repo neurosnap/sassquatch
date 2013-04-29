@@ -20,27 +20,44 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
- 
+
 public class BackGroundTask extends AsyncTask<String, String, JSONArray> {
   
+	private asyncOnComplete<JSONArray> callback;
 	List<NameValuePair> postparams = new ArrayList<NameValuePair>();
 	String URL = null;
 	String method = null;
 	static InputStream is = null;
 	static JSONArray jObj = null;
 	static String json = "";
- 
-	public BackGroundTask(String url, String method, List<NameValuePair> params) {
+	private ProgressDialog dialog;
+	/* application context. */
+    private Context context;
+    
+	public BackGroundTask(Activity activity, asyncOnComplete<JSONArray> cb, String url, String method, List<NameValuePair> params) {
+		this.context = activity;
+		this.callback = cb;
 		this.URL = url;
 		this.postparams = params;
 		this.method = method;
+		//dialog = new ProgressDialog(context);
 	}
- 
+
+	@Override
+	protected void onPreExecute() {
+        super.onPreExecute();
+		dialog = ProgressDialog.show(this.context, "", "Loading...");
+
+    }
+	
 	@Override
 	protected JSONArray doInBackground(String... params) {
-		// TODO Auto-generated method stub
+		
 		// Making HTTP request
 		try {
 			// Making HTTP request
@@ -108,4 +125,16 @@ public class BackGroundTask extends AsyncTask<String, String, JSONArray> {
 		return jObj; 
 	 
 	}
+	
+	@Override
+	protected void onPostExecute(JSONArray result) {
+		super.onPostExecute(result);
+		
+		if (dialog != null && dialog.isShowing()) {
+			dialog.dismiss();
+		}
+		
+		callback.onComplete(result);
+		
+    }
 }

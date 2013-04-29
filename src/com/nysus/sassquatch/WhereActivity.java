@@ -26,7 +26,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class WhereActivity extends Activity implements OnItemSelectedListener {
+public class WhereActivity extends Activity implements OnItemSelectedListener, asyncOnComplete<JSONArray> {
 	
 	TextView where_date;
 	Button where_go;
@@ -35,6 +35,7 @@ public class WhereActivity extends Activity implements OnItemSelectedListener {
 	EditText inp_mileage;
 	static BackGroundTask jso;
 	static BackGroundTask jso_submit;
+	asyncOnComplete<JSONArray> that = this;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,7 @@ public class WhereActivity extends Activity implements OnItemSelectedListener {
         		}
         		
         		//Async class
-        		jso_submit = new BackGroundTask("http://www.nysus.net/sassquatch/sassy.php", "GET", params);
+        		jso_submit = new BackGroundTask(WhereActivity.this, that, "http://www.nysus.net/sassquatch/sassy.php", "GET", params);
         		//Executes the async thread
         		WhereActivity.jso_submit.execute();
         		
@@ -114,15 +115,21 @@ public class WhereActivity extends Activity implements OnItemSelectedListener {
 		params.add(new BasicNameValuePair("action", "get_customers"));
 		
 		//async class
-		jso = new BackGroundTask("http://www.nysus.net/sassquatch/sassy.php", "GET", params);
-	    // you can use this array to find the school ID based on name
+		jso = new BackGroundTask(WhereActivity.this, that, "http://www.nysus.net/sassquatch/sassy.php", "GET", params);
+		//activates doInBackground for BackGroundTask
+		//then after the async task is done, call onComplete()
+		WhereActivity.jso.execute();
+		
+	}
+	
+	//callback for BackGroundTask async call
+	public void onComplete(JSONArray jsonArray) {
+
 	    ArrayList<Customer> customers = new ArrayList<Customer>();
 	    // you can use this array to populate your spinner
 	    ArrayList<String> customer_name = new ArrayList<String>();
 
 	    try {
-	    	
-	    	JSONArray jsonArray = WhereActivity.jso.execute().get();
 	      
 	      for (int i = 0; i < jsonArray.length(); i++) {
 	    	  
@@ -141,7 +148,6 @@ public class WhereActivity extends Activity implements OnItemSelectedListener {
 		Spinner spinner = (Spinner) findViewById(R.id.customer_spinner);
 		spinner.setOnItemSelectedListener(this);
 		spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, customer_name));
-		
 	}
 
 	/**
