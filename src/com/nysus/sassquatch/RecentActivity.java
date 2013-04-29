@@ -34,16 +34,14 @@ public class RecentActivity extends ListActivity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		//start intent which runs between activities
-		//Intent intent = getIntent();
 		//get data from previous screen
-		//final String user = intent.getStringExtra(WhenActivity.USERNAME);
 		final String user = User.getName();
+		
 		recent_view = (TextView) findViewById(R.id.recent_view);
 		recent_view.setText(user);
 		
-		//list = (ListView) findViewById(R.id.list);
-		
+		//----
+		//ASYNC SERVER CALL
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("action", "get_recent"));
 		params.add(new BasicNameValuePair("user", user));

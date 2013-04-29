@@ -36,12 +36,10 @@ public class WhenActivity extends FragmentActivity {
 		setContentView(R.layout.activity_when);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		
-		//start intent which runs between activities
-		//Intent intent = getIntent();
+	
 		//get data from previous screen
-		//final String user = intent.getStringExtra(MainActivity.USERNAME);
 		final String user = User.getName();
+		
 		//display user name
 		whenName = (TextView) findViewById(R.id.when_view);
 		whenName.setText(user + ", please select a date to continue");
@@ -49,6 +47,7 @@ public class WhenActivity extends FragmentActivity {
 		//get date picked text
 		whenDatePicked = (TextView) findViewById(R.id.when_date_picked);
 		
+		//Calendar class
 		final Calendar c = Calendar.getInstance();
 		int year = c.get(Calendar.YEAR);
 		int month = c.get(Calendar.MONTH);
@@ -61,21 +60,21 @@ public class WhenActivity extends FragmentActivity {
 		when_next = (Button) findViewById(R.id.when_go);
 		when_next.setOnClickListener(new View.OnClickListener() {
              public void onClick(View v) {
-                 // Perform action on click
+                // Perform action on click
+            	//Go to new activity or page
             	Intent where_intent = new Intent(WhenActivity.this, WhereActivity.class);
          		where_intent.putExtra(SELDATE, sel_date);
-         		//where_intent.putExtra(USERNAME, user);
          		startActivity(where_intent);
              }
          });
 		
-		//get recent buttons
+		//get recent button
 		when_recent = (Button) findViewById(R.id.when_recent);
 		when_recent.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
+            	//Go to new activity or page
             	Intent recent_intent = new Intent(WhenActivity.this, RecentActivity.class);
-         		//recent_intent.putExtra(USERNAME, user);
          		startActivity(recent_intent);
             }
         });
@@ -109,12 +108,14 @@ public class WhenActivity extends FragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	//Calendar method
 	public void showDatePickerDialog(View v) {
 	    DatePickerFragment newFragment = new DatePickerFragment();
 	    newFragment.show(getSupportFragmentManager(), "datePicker");
 	}
 	
-
+	
+	//Calendar method
 	public static class DatePickerFragment extends android.support.v4.app.DialogFragment
 						implements DatePickerDialog.OnDateSetListener {
 
